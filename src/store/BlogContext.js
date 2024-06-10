@@ -4,11 +4,12 @@ const BlogContext=createContext({
     blogs:[],
     openForm:false,
     editForm:false,
-    editAllow:()=>{},
-    editDisable:()=>{},
+    editAllow:(blog)=>{},
+    editBlog:(blog)=>{},
+    editData:{},
     alowOpneForm:()=>{},
     disableOpenForm:()=>{},
-    addBlog:(user)=>{},
+    addBlog:(blog)=>{},
     removeBlog:(id)=>{},
 })
 

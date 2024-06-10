@@ -1,14 +1,22 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import BlogContext from "../store/BlogContext";
 import Model from "./UI/Model";
 
 const UserForm = (props) => {
-    const blogCtx=useContext(BlogContext);
-
+    const blogCtx = useContext(BlogContext);
     const [url, setUrl] = useState('')
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    
+    const { editForm ,editData} = blogCtx
+    useEffect(() => {
+        if (editForm) {
+            const data = editData;
+            setUrl(data.url);
+            setDescription(data.description);
+            setTitle(data.title)
+        }
+    }, [editData, editForm])
+
     const titleChangeHandler = (e) => {
         setTitle(e.target.value)
     }
@@ -21,15 +29,24 @@ const UserForm = (props) => {
 
     const formSubmitHandler = (event) => {
         event.preventDefault();
-        const id=Math.random().toString(36).slice(2,9)
+        const id = Math.random().toString(36).slice(2, 9)
         const blog = {
             id,
             url,
             title,
             description
         }
-        blogCtx.addBlog(blog)
-        blogCtx.disableOpenForm();
+        if (editForm) {
+            blogCtx.editBlog({
+                id:editData.id,
+                url,
+                title,
+                description
+            })
+        }
+        else {
+            blogCtx.addBlog(blog)
+        }
     }
 
     return <Model>
@@ -41,7 +58,7 @@ const UserForm = (props) => {
             <label>Blog Description:</label>
             <input onChange={desChangeHandler} value={description} type="text" />
             <div style={{ marginLeft: '50%', marginTop: '5%' }}>
-                <button type="submit">Post Blog</button>
+                <button type="submit" >{editForm ? 'Edit' : 'Add'} Blog</button>
             </div>
         </form>
         <button type="close" onClick={blogCtx.disableOpenForm}>Close</button>

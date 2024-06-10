@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from 'react'
+import BlogContext from './store/BlogContext'
+import BlogForm from './component/BlogForm'
+import BlogList from './component/BlogsList'
+const App = () => {
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const formCtx = useContext(BlogContext)
+
+    const WriteBlogHnadler = () => {
+        formCtx.alowOpneForm()
+    }
+
+    return <>
+        <div style={{ textAlign: 'center', borderBottom: '2px solid ' }}>
+            <h1>Blog Website</h1>
+            <button onClick={WriteBlogHnadler}>Add new Bog</button>
+        </div>
+        {formCtx.openForm && <BlogForm />}
+        <BlogList />
+    </>
 }
 
 export default App;
